@@ -49,16 +49,6 @@ export const publicoVehiculosAPI = {
     return data; // number deleted (de la definición devuelve integer)
   },
 
-  // nuevo: suggest by interest
-  async suggestByInterest(codPublico, limit = 50) {
-    const { data, error } = await supabase.rpc("suggest_vehiculos_by_interest", {
-      p_cod_publico: codPublico,
-      p_limit: limit,
-    });
-    if (error) throw error;
-    return data;
-  },
-
   async add(codPublico, codVehiculo) {
     const { error } = await supabase
       .from("publico_objetivo_vehiculos_publicitarios")

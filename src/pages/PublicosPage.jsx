@@ -1,8 +1,8 @@
 // pages/PublicosPage.jsx
 import { useEffect, useState } from "react";
 import { publicoAPI } from "../lib/crudPublicosAPI";
-import { PublicosTable } from "../components/PublicosTable";
-import ModalVehiculosRelacion from "../components/Publicos/ModalVehiculosRelacion";
+import { PublicosTable } from "../components/PublicosConVehiculos/PublicosTable";
+import ModalVehiculosRelacion from "../components/PublicosConVehiculos/ModalVehiculosRelacion";
 
 export default function PublicosPage() {
   const [publicos, setPublicos] = useState([]);
