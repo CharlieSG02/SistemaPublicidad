@@ -34,10 +34,12 @@ export function PublicosTable({ data, onSelect }) {
   ];
 
   return (
-    <Table 
-      data={data} 
-      columns={columns} 
+    <Table
+      data={data}
+      columns={columns}
       onSelect={onSelect}
+      enableFilters={true}
+      enableSorting={true}
     />
   );
 }

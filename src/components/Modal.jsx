@@ -41,7 +41,7 @@ const Modal = ({ isOpen, onClose, title, children, className }) => {
                     <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                       {title}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-1">Gestión de Públicos - Electrónicos</p>
+                    
                   </div>
                 </div>
 

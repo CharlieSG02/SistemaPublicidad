@@ -8,7 +8,6 @@ import {
 
 export default function ModalRelaciones({
   entidadPrincipal,
-  entidadRelacionada,
   isOpen,
   onClose,
   // APIs
