@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import PublicosPage from './pages/PublicosPage';
 import VehiculosPage from './pages/VehiculosPage';
+import EspaciosPage from './pages/EspaciosPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/catalogos/tipo-producto" element={<ProductosPage />} />
               <Route path="/catalogos/publico-objetivo" element={<PublicosPage />} />
               <Route path="/catalogos/vehiculos-publicitarios" element={<VehiculosPage />} />
+              <Route path="/catalogos/espacios-publicitarios" element={<EspaciosPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Route>

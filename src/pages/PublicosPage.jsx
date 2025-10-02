@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { publicoAPI } from "../lib/crudPublicosAPI";
 import { PublicosTable } from "../components/PublicosConVehiculos/PublicosTable";
 import ModalVehiculosRelacion from "../components/PublicosConVehiculos/ModalVehiculosRelacion";
-import { Users, Target, Filter, Truck } from 'lucide-react';
+import ModalTiposProductoRelacion from "../components/PublicosConVehiculos/ModalProdcutosRelacion";
+import SelectorModal from "../components/SelectorModal";
+import { Users, Target, Filter, Truck, Package } from 'lucide-react';
 
 export default function PublicosPage() {
   const [publicos, setPublicos] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [selectedPublico, setSelectedPublico] = useState(null);
+  const [selectedModal, setSelectedModal] = useState(null); // 'vehiculos' | 'tipos-producto'
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,9 +28,19 @@ export default function PublicosPage() {
     fetchPublicos();
   }, []);
 
+  const handleSelectPublico = (publico) => {
+    setSelectedPublico(publico);
+    setSelectedModal(null); // Reset para mostrar el selector
+  };
+
+  const handleCloseModal = () => {
+    setSelectedPublico(null);
+    setSelectedModal(null);
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-8">
-      {/* Título */}
+      {/* Título actualizado */}
       <div className="flex items-center justify-between bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-2xl border border-purple-200/50 shadow-sm">
         <div className="flex items-center space-x-4">
           <div className="p-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-2xl shadow-lg">
@@ -38,13 +51,13 @@ export default function PublicosPage() {
               Públicos Objetivo
             </h1>
             <p className="text-lg text-gray-600 mt-2 font-medium">
-              Gestiona los vehículos publicitarios para cada público objetivo
+              Gestiona las relaciones con vehículos publicitarios y tipos de producto
             </p>
           </div>
         </div>
         <div className="text-right max-w-md">
           <p className="text-sm text-gray-500 bg-white/80 px-4 py-2 rounded-lg border border-gray-200/50 shadow-sm">
-            <span className="font-semibold text-purple-600">💡</span> Selecciona un público para ver sus vehículos relacionados
+            <span className="font-semibold text-purple-600">💡</span> Selecciona un público para gestionar sus relaciones
           </p>
         </div>
       </div>
@@ -77,17 +90,32 @@ export default function PublicosPage() {
           <div className="relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-3xl blur-sm"></div>
             <div className="relative bg-white/80 rounded-2xl border border-white/50 shadow-inner">
-              <PublicosTable data={publicos} onSelect={setSelected} />
+              <PublicosTable data={publicos} onSelect={handleSelectPublico} />
             </div>
           </div>
         )}
       </div>
 
-      {/* Modal de relaciones */}
+      {/* Selector de modal */}
+      <SelectorModal
+        publico={selectedPublico}
+        isOpen={!!selectedPublico && !selectedModal}
+        onSelectModal={setSelectedModal}
+        onClose={handleCloseModal}
+      />
+
+      {/* Modal de vehículos */}
       <ModalVehiculosRelacion
-        publico={selected}
-        isOpen={!!selected}
-        onClose={() => setSelected(null)}
+        publico={selectedPublico}
+        isOpen={selectedModal === 'vehiculos'}
+        onClose={handleCloseModal}
+      />
+
+      {/* Modal de tipos de producto */}
+      <ModalTiposProductoRelacion
+        publico={selectedPublico}
+        isOpen={selectedModal === 'tipos-producto'}
+        onClose={handleCloseModal}
       />
     </div>
   );
