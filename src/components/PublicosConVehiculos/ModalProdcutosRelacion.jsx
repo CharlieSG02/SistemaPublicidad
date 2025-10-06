@@ -1,6 +1,6 @@
 // components/PublicosConTiposProducto/ModalTiposProductoRelacion.jsx
 import ModalRelaciones from "../common/ModalRelaciones";
-import { publicoTiposProductoAPI } from "../../lib/crudPublicoProductoAPI";
+import { publicoTiposProductoAPI } from "../../lib/crudPublicoProductoAPI"; // ← Importación corregida
 
 const configTiposProducto = {
   idKey: "cod_publico_objetivo",
@@ -22,19 +22,25 @@ const configTiposProducto = {
   ),
   
   renderItemRelacionada: (tipoProducto) => (
-    <div>
-      <p className="font-semibold">{tipoProducto.rubro}</p>
+    <div className="p-3 border rounded-lg bg-white shadow-sm">
+      <p className="font-semibold text-gray-900">{tipoProducto.rubro}</p>
+      <p className="text-sm text-gray-600 mt-1">
+        <span className="font-medium">Familia:</span> {tipoProducto.familia}
+      </p>
       <p className="text-sm text-gray-600">
-        {tipoProducto.familia} • {tipoProducto.clase}
+        <span className="font-medium">Clase:</span> {tipoProducto.clase}
       </p>
     </div>
   ),
   
   renderItemDisponible: (tipoProducto) => (
-    <div>
-      <p className="font-semibold">{tipoProducto.rubro}</p>
+    <div className="p-3 border rounded-lg bg-gray-50">
+      <p className="font-semibold text-gray-900">{tipoProducto.rubro}</p>
+      <p className="text-sm text-gray-600 mt-1">
+        <span className="font-medium">Familia:</span> {tipoProducto.familia}
+      </p>
       <p className="text-sm text-gray-600">
-        {tipoProducto.familia} • {tipoProducto.clase}
+        <span className="font-medium">Clase:</span> {tipoProducto.clase}
       </p>
     </div>
   ),

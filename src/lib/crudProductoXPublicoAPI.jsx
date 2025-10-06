@@ -1,4 +1,5 @@
 import { supabase } from './supabase.config.jsx';
+// SE EMPLEÓ LOS RPCs DE MANERA CORRECTA, CON NOMBRE EN ESPAÑOL
 
 export const productoXPublicoAPI = {
 
@@ -44,7 +45,7 @@ export const productoXPublicoAPI = {
   async bulkAddTipoProductoPublico(codTipoProducto, codPublicos = []) {
     if (!Array.isArray(codPublicos) || codPublicos.length === 0) return [];
 
-    const { data, error } = await supabase.rpc("add_tipo_producto_publico_bulk", {
+    const { data, error } = await supabase.rpc("Agregar Publicos Objetivos En Grupo a un Tipo de Producto", {
       p_cod_tipo_producto: codTipoProducto,
       p_cod_publicos: codPublicos,
     });
@@ -57,7 +58,7 @@ export const productoXPublicoAPI = {
   async bulkRemoveTipoProductoPublico(codTipoProducto, codPublicos = []) {
     if (!Array.isArray(codPublicos) || codPublicos.length === 0) return 0;
 
-    const { data, error } = await supabase.rpc("remove_tipo_producto_publico_bulk", {
+    const { data, error } = await supabase.rpc("Remover Publico Objetivo en Grupo para un Tipo de Producto", {
       p_cod_tipo_producto: codTipoProducto,
       p_cod_publicos: codPublicos,
     });

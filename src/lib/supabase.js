@@ -1,29 +1,56 @@
-import {supabase} from './supabase.config.jsx';
+import { supabase } from './supabase.config.jsx';
 
-// --- Auth API ---
+/**
+ * ============================================================================
+ * SISTEMA DE GESTIÓN DE PUBLICIDAD - APIs de Supabase
+ * ============================================================================
+ * 
+ * Este archivo contiene las APIs principales para interactuar con Supabase.
+ * Organizado por categorías funcionales.
+ */
+
+// ============================================================================
+// 1. AUTENTICACIÓN
+// ============================================================================
+/**
+ * API de Autenticación
+ * Maneja registro, inicio de sesión, cierre de sesión y gestión de usuarios
+ * Usado en: Login.jsx, Signup.jsx, AuthContext.jsx, Header.jsx
+ */
 export const authAPI = {
+  // Registrar nuevo usuario
   signUp: async ({ email, password }) => {
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) throw error;
     return data;
   },
+
+  // Iniciar sesión
   signIn: async ({ email, password }) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   },
+
+  // Cerrar sesión
   signOut: async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   },
+
+  // Obtener usuario actual
   getUser: async () => {
     const { data: { user } } = await supabase.auth.getUser();
     return user;
   },
+
+  // Obtener sesión actual
   getSession: async () => {
     const { data: { session } } = await supabase.auth.getSession();
     return session;
   },
+
+  // Escuchar cambios en el estado de autenticación
   onAuthStateChange: (callback) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       callback(event, session);
@@ -32,100 +59,16 @@ export const authAPI = {
   }
 };
 
-
-// Funciones para Tipo de Producto
-export const tipoProductoAPI = {
-  // Obtener todos los tipos de producto
-  getAll: async () => {
-    const { data, error } = await supabase
-      .from('tipo_producto')
-      .select('*')
-      .order('cod_tipo_producto', { ascending: true });
-
-    if (error) throw error;
-    return data || [];
-  },
-
-  // Crear nuevo tipo de producto
-  create: async (tipoProducto) => {
-    const { data, error } = await supabase
-      .from('tipo_producto')
-      .insert([tipoProducto])
-      .select();
-
-    if (error) throw error;
-    return data[0];
-  },
-
-  // Actualizar tipo de producto
-  update: async (id, tipoProducto) => {
-    const { data, error } = await supabase
-    .from('tipo_producto')
-    .update(tipoProducto)
-    .eq('cod_tipo_producto', id)
-    .select('*');
-
-    if (error) throw error;
-    return data[0];
-  },
-
-
-  // Eliminar tipo de producto
-  delete: async (id) => {
-    const { error } = await supabase
-      .from('tipo_producto')
-      .delete()
-      .eq('cod_tipo_producto', id);
-
-    if (error) throw error;
-  }
-};
-
-// Funciones para Público Objetivo
-export const publicoObjetivoAPI = {
-  getAll: async () => {
-    const { data, error } = await supabase
-      .from('publico_objetivo')
-      .select('*')
-      .order('cod_publico_objetivo', { ascending: true });
-
-    if (error) throw error;
-    return data || [];
-  },
-
-  create: async (publicoObjetivo) => {
-    const { data, error } = await supabase
-      .from('publico_objetivo')
-      .insert([publicoObjetivo])
-      .select();
-
-    if (error) throw error;
-    return data[0];
-  },
-
-  update: async (id, publicoObjetivo) => {
-    const { data, error } = await supabase
-      .from('publico_objetivo')
-      .update(publicoObjetivo)
-      .eq('cod_publico_objetivo', id)
-      .select();
-
-    if (error) throw error;
-    return data[0];
-  },
-
-  delete: async (id) => {
-    const { error } = await supabase
-      .from('publico_objetivo')
-      .delete()
-      .eq('cod_publico_objetivo', id);
-
-    if (error) throw error;
-  }
-};
-
-// Funciones para Vehículos Publicitarios
+// ============================================================================
+// 2. VEHÍCULOS PUBLICITARIOS
+// ============================================================================
+/**
+ * API de Vehículos Publicitarios
+ * CRUD completo para vehículos publicitarios
+ * Usado en: VehiculosPublicitarios.jsx
+ */
 export const vehiculosPublicitariosAPI = {
+  // Obtener todos los vehículos
   getAll: async () => {
     const { data, error } = await supabase
       .from('vehiculos_publicitarios')
@@ -136,6 +79,7 @@ export const vehiculosPublicitariosAPI = {
     return data || [];
   },
 
+  // Crear nuevo vehículo
   create: async (vehiculo) => {
     const { data, error } = await supabase
       .from('vehiculos_publicitarios')
@@ -146,6 +90,7 @@ export const vehiculosPublicitariosAPI = {
     return data[0];
   },
 
+  // Actualizar vehículo existente
   update: async (id, vehiculo) => {
     const { data, error } = await supabase
       .from('vehiculos_publicitarios')
@@ -157,6 +102,7 @@ export const vehiculosPublicitariosAPI = {
     return data[0];
   },
 
+  // Eliminar vehículo
   delete: async (id) => {
     const { error } = await supabase
       .from('vehiculos_publicitarios')
@@ -167,8 +113,16 @@ export const vehiculosPublicitariosAPI = {
   }
 };
 
-// Funciones para Espacios Publicitarios
+// ============================================================================
+// 3. ESPACIOS PUBLICITARIOS
+// ============================================================================
+/**
+ * API de Espacios Publicitarios
+ * CRUD completo para espacios publicitarios con relación a vehículos
+ * Usado en: VehiculosPublicitarios.jsx (indirectamente)
+ */
 export const espaciosPublicitariosAPI = {
+  // Obtener todos los espacios con información del vehículo
   getAll: async () => {
     const { data, error } = await supabase
       .from('espacios_publicitarios')
@@ -185,6 +139,7 @@ export const espaciosPublicitariosAPI = {
     return data || [];
   },
 
+  // Crear nuevo espacio
   create: async (espacio) => {
     const { data, error } = await supabase
       .from('espacios_publicitarios')
@@ -195,6 +150,7 @@ export const espaciosPublicitariosAPI = {
     return data[0];
   },
 
+  // Actualizar espacio existente
   update: async (id, espacio) => {
     const { data, error } = await supabase
       .from('espacios_publicitarios')
@@ -206,6 +162,7 @@ export const espaciosPublicitariosAPI = {
     return data[0];
   },
 
+  // Eliminar espacio
   delete: async (id) => {
     const { error } = await supabase
       .from('espacios_publicitarios')
@@ -216,8 +173,16 @@ export const espaciosPublicitariosAPI = {
   }
 };
 
-// Función para obtener estadísticas del dashboard
+// ============================================================================
+// 4. DASHBOARD Y ESTADÍSTICAS
+// ============================================================================
+/**
+ * API de Dashboard
+ * Obtiene estadísticas generales del sistema
+ * Usado en: Dashboard.jsx
+ */
 export const dashboardAPI = {
+  // Obtener contadores de todas las entidades principales
   getStats: async () => {
     try {
       const [
@@ -225,13 +190,13 @@ export const dashboardAPI = {
         { count: publicoObjetivoCount },
         { count: vehiculosCount },
         { count: espaciosCount },
-        { count: relacionesCount } // AÑADIR esta línea
+        { count: relacionesCount }
       ] = await Promise.all([
         supabase.from('tipo_producto').select('*', { count: 'exact', head: true }),
         supabase.from('publico_objetivo').select('*', { count: 'exact', head: true }),
         supabase.from('vehiculos_publicitarios').select('*', { count: 'exact', head: true }),
         supabase.from('espacios_publicitarios').select('*', { count: 'exact', head: true }),
-        supabase.from('tipo_producto_publico_objetivo').select('*', { count: 'exact', head: true }) // AÑADIR esta línea
+        supabase.from('tipo_producto_publico_objetivo').select('*', { count: 'exact', head: true })
       ]);
 
       return {
@@ -239,7 +204,7 @@ export const dashboardAPI = {
         publicoObjetivoCount: publicoObjetivoCount || 0,
         vehiculosCount: vehiculosCount || 0,
         espaciosCount: espaciosCount || 0,
-        relacionesCount: relacionesCount || 0 // AÑADIR esta línea
+        relacionesCount: relacionesCount || 0
       };
     } catch (error) {
       console.error('Error al obtener estadísticas:', error);
@@ -248,77 +213,13 @@ export const dashboardAPI = {
         publicoObjetivoCount: 0,
         vehiculosCount: 0,
         espaciosCount: 0,
-        relacionesCount: 0 // AÑADIR esta línea
+        relacionesCount: 0
       };
     }
   }
 };
 
-// TAMBIÉN AÑADIR: Función para obtener listas para formularios
-export const formsAPI = {
-  // Obtener lista de productos para select/dropdown
-  getTiposProducto: async () => {
-    const { data, error } = await supabase
-      .from('tipo_producto')
-      .select('cod_tipo_producto, rubro, familia, clase')
-      .order('rubro', { ascending: true });
 
-    if (error) throw error;
-    return data || [];
-  },
-
-  // Obtener lista de públicos para select/dropdown
-  getPublicosObjetivo: async () => {
-    const { data, error } = await supabase
-      .from('publico_objetivo')
-      .select('cod_publico_objetivo, sexo, rango_edad, interes, nivel_socioeconomico, estado_civil')
-      .order('interes', { ascending: true });
-
-    if (error) throw error;
-    return data || [];
-  },
-
-  // Obtener estadísticas para dashboard
-  getRelacionesStats: async () => {
-    try {
-      const [
-        { count: totalRelaciones },
-        productos,
-        publicos
-      ] = await Promise.all([
-        supabase.from('tipo_producto_publico_objetivo').select('*', { count: 'exact', head: true }),
-        supabase.from('tipo_producto').select('rubro').order('rubro'),
-        supabase.from('publico_objetivo').select('interes').order('interes')
-      ]);
-
-      // Contar productos únicos por rubro
-      const productosPorRubro = productos.data?.reduce((acc, prod) => {
-        acc[prod.rubro] = (acc[prod.rubro] || 0) + 1;
-        return acc;
-      }, {}) || {};
-
-      // Contar públicos únicos por interés
-      const publicosPorInteres = publicos.data?.reduce((acc, pub) => {
-        acc[pub.interes] = (acc[pub.interes] || 0) + 1;
-        return acc;
-      }, {}) || {};
-
-      return {
-        totalRelaciones: totalRelaciones || 0,
-        productosPorRubro,
-        publicosPorInteres
-      };
-    } catch (error) {
-      console.error('Error al obtener estadísticas:', error);
-      return {
-        totalRelaciones: 0,
-        productosPorRubro: {},
-        publicosPorInteres: {}
-      };
-    }
-  }
-
-}
 
 
 

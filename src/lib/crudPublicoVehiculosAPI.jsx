@@ -30,7 +30,7 @@ export const publicoVehiculosAPI = {
   // nuevo: bulk add (RPC)
   async bulkAdd(codPublico, codVehiculos = []) {
     if (!Array.isArray(codVehiculos) || codVehiculos.length === 0) return [];
-    const { data, error } = await supabase.rpc("add_relations_bulk", {
+    const { data, error } = await supabase.rpc("AGREGAR VEHICULOS EN GRUPO", {
       p_cod_publico: codPublico,
       p_cod_vehiculos: codVehiculos,
     });
@@ -49,19 +49,4 @@ export const publicoVehiculosAPI = {
     return data; // number deleted (de la definición devuelve integer)
   },
 
-  async add(codPublico, codVehiculo) {
-    const { error } = await supabase
-      .from("publico_objetivo_vehiculos_publicitarios")
-      .insert([{ cod_publico_objetivo: codPublico, cod_vehiculo: codVehiculo }]);
-    if (error) throw error;
-  },
-
-  async remove(codPublico, codVehiculo) {
-    const { error } = await supabase
-      .from("publico_objetivo_vehiculos_publicitarios")
-      .delete()
-      .eq("cod_publico_objetivo", codPublico)
-      .eq("cod_vehiculo", codVehiculo);
-    if (error) throw error;
-  },
 };

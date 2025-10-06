@@ -2,45 +2,90 @@
 import { supabase } from "./supabase.config";
 
 export const publicoTiposProductoAPI = {
-  // Tipos de producto relacionados
   async getTiposProductoByPublico(codPublico) {
-    const { data, error } = await supabase
-      .from("tipo_producto_publico_objetivo")
-      .select("tipo_producto (cod_tipo_producto, rubro, familia, clase)")
-      .eq("cod_publico_objetivo", codPublico);
+    try {
+      console.log("🔍 Buscando tipos de producto relacionados para público:", codPublico);
+      
+      const { data, error } = await supabase
+        .from("tipo_producto_publico_objetivo")
+        .select("tipo_producto (cod_tipo_producto, rubro, familia, clase)")
+        .eq("cod_publico_objetivo", codPublico);
 
-    if (error) throw error;
-    return data.map((row) => row.tipo_producto);
+      if (error) throw error;
+      
+      const tiposProducto = data.map((row) => row.tipo_producto).filter(item => item !== null);
+      console.log("✅ Tipos de producto relacionados:", tiposProducto);
+      
+      return tiposProducto;
+    } catch (error) {
+      console.error("💥 Error en getTiposProductoByPublico:", error);
+      throw error;
+    }
   },
 
-  // Tipos de producto disponibles
   async getTiposProductoDisponibles(codPublico) {
-    const { data, error } = await supabase.rpc("tipos_producto_disponibles", {
-      p_cod_publico: codPublico
-    });
+    try {
+      console.log("🔍 Buscando tipos disponibles via RPC para público:", codPublico);
+      
+      const { data, error } = await supabase.rpc("TIPOS DE PRODUCTOS DISPONIBLES", {
+        p_cod_publico: codPublico
+      });
 
-    if (error) throw error;
-    return data;
+      if (error) throw error;
+      
+      console.log("✅ Tipos disponibles encontrados:", data);
+      return data || [];
+    } catch (error) {
+      console.error("💥 Error en getTiposProductoDisponibles:", error);
+      throw error;
+    }
   },
 
-  // Bulk operations
   async bulkAdd(codPublico, codTiposProducto = []) {
-    if (!Array.isArray(codTiposProducto) || codTiposProducto.length === 0) return [];
-    const { data, error } = await supabase.rpc("add_tipos_producto_bulk", {
-      p_cod_publico: codPublico,
-      p_cod_tipos_producto: codTiposProducto,
-    });
-    if (error) throw error;
-    return data;
+    try {
+      if (!Array.isArray(codTiposProducto) || codTiposProducto.length === 0) {
+        console.log("ℹ️ No hay tipos de producto para agregar");
+        return [];
+      }
+      
+      console.log("➕ Agregando tipos:", codTiposProducto, "al público:", codPublico);
+      
+      const { data, error } = await supabase.rpc("AGREGAR TIPOS DE PRODUCTO EN GRUPO A UN PUBLICO OBJETIVO", {
+        p_cod_publico: codPublico,
+        p_cod_tipos_producto: codTiposProducto,
+      });
+      
+      if (error) throw error;
+      
+      console.log("✅ Bulk add exitoso:", data);
+      return data;
+    } catch (error) {
+      console.error("💥 Error en bulkAdd:", error);
+      throw error;
+    }
   },
 
   async bulkRemove(codPublico, codTiposProducto = []) {
-    if (!Array.isArray(codTiposProducto) || codTiposProducto.length === 0) return 0;
-    const { data, error } = await supabase.rpc("remove_tipos_producto_bulk", {
-      p_cod_publico: codPublico,
-      p_cod_tipos_producto: codTiposProducto,
-    });
-    if (error) throw error;
-    return data;
+    try {
+      if (!Array.isArray(codTiposProducto) || codTiposProducto.length === 0) {
+        console.log("ℹ️ No hay tipos de producto para eliminar");
+        return 0;
+      }
+      
+      console.log("➖ Eliminando tipos:", codTiposProducto, "del público:", codPublico);
+      
+      const { data, error } = await supabase.rpc("QUITAR TIPOS DE PRODUCTO EN GRUPO PARA UN PUBLICO OBJETIVO", {
+        p_cod_publico: codPublico,
+        p_cod_tipos_producto: codTiposProducto,
+      });
+      
+      if (error) throw error;
+      
+      console.log("✅ Bulk remove exitoso, eliminados:", data);
+      return data;
+    } catch (error) {
+      console.error("💥 Error en bulkRemove:", error);
+      throw error;
+    }
   },
 };

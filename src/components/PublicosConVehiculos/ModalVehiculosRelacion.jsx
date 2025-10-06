@@ -1,5 +1,4 @@
 import ModalRelaciones from "../../components/common/ModalRelaciones";
-import VehiculoFilters from "./VehiculoFilters";
 import { publicoVehiculosAPI } from "../../lib/crudPublicoVehiculosAPI";
 
 // Configuración específica para la relación Público-Vehículo
@@ -48,7 +47,6 @@ const configVehiculos = {
   textoBotonRemover: (count) => `Quitar seleccionados (${count})`,
   
   // Componente de filtros
-  FiltersComponent: VehiculoFilters,
 };
 
 export default function ModalVehiculosRelacion({ publico, isOpen, onClose }) {

@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { publicoVehiculosAPI } from "../lib/crudPublicoVehiculosAPI";
-import { vehiculosAPI } from "../lib/crudVehiculosAPI";
 
 export default function RelationSelectModal({ isOpen, onClose, publico, onAdded }) {
   const [available, setAvailable] = useState([]);
@@ -13,7 +12,7 @@ export default function RelationSelectModal({ isOpen, onClose, publico, onAdded 
     if (!isOpen || !publico) return;
     const load = async () => {
       try {
-        const data = await publicoVehiculosAPI.getAvailableVehiclesForPublic(publico.cod_publico_objetivo);
+        const data = await publicoVehiculosAPI.getVehiculosDisponibles(publico.cod_publico_objetivo);
         setAvailable(data);
       } catch (err) {
         console.error(err);
@@ -32,9 +31,8 @@ export default function RelationSelectModal({ isOpen, onClose, publico, onAdded 
     if (sel.size === 0) return alert("Seleccione al menos 1 vehículo");
     setLoading(true);
     try {
-      for (const id of Array.from(sel)) {
-        await publicoVehiculosAPI.addRelation(publico.cod_publico_objetivo, id);
-      }
+      // Usar bulkAdd para agregar múltiples vehículos de una vez
+      await publicoVehiculosAPI.bulkAdd(publico.cod_publico_objetivo, Array.from(sel));
       onAdded();
     } catch (err) {
       console.error(err);
