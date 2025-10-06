@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './',
+  base: '/TEST-1.0/',
   build: {
-    outDir: 'docs'  // ← Cambia dist por docs
+    outDir: 'dist'
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
