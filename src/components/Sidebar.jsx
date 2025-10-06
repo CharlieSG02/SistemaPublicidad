@@ -7,13 +7,18 @@ import {
   Folder, 
   Package, 
   Users, 
-  Car, 
+  Truck, 
   MapPin, 
   UserCheck,
   ChevronLeft,
   ChevronRight as ChevronRightIcon,
   Menu,
-  X
+  X,
+  LayoutDashboard,
+  ShoppingBag,
+  Target,
+  Navigation,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,26 +33,30 @@ const Sidebar = () => {
     { 
       name: 'Tipo de Producto', 
       path: '/catalogos/tipo-producto', 
-      icon: Package,
-      shortName: 'Producto'
+      icon: ShoppingBag,
+      shortName: 'Producto',
+      gradient: 'from-blue-500 to-purple-600'
     },
     { 
       name: 'Público Objetivo', 
       path: '/catalogos/publico-objetivo', 
-      icon: Users,
-      shortName: 'Público'
+      icon: Target,
+      shortName: 'Público',
+      gradient: 'from-purple-500 to-pink-600'
     },
     { 
       name: 'Vehículos Publicitarios', 
       path: '/catalogos/vehiculos-publicitarios', 
-      icon: Car,
-      shortName: 'Vehículos'
+      icon: Truck,
+      shortName: 'Vehículos',
+      gradient: 'from-orange-500 to-red-600'
     },
     { 
       name: 'Espacios Publicitarios', 
       path: '/catalogos/espacios-publicitarios', 
-      icon: MapPin,
-      shortName: 'Espacios'
+      icon: Navigation,
+      shortName: 'Espacios',
+      gradient: 'from-green-500 to-teal-600'
     }
   ];
 
@@ -100,34 +109,44 @@ const Sidebar = () => {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Tema Oscuro */}
       <div className={`
         fixed lg:static inset-y-0 left-0 z-40
-        bg-white shadow-lg border-r border-gray-200
-        transition-all duration-100 ease-in-out
+        bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-2xl border-r border-gray-700/50
+        transition-all duration-300 ease-in-out
         ${sidebarWidth} 
         lg:translate-x-0 ${mobileSidebar}
       `}>
-        {/* Header */}
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+        {/* Header con gradiente oscuro */}
+        <div className="p-4 border-b border-gray-700/50 bg-gradient-to-r from-gray-800 to-gray-900 flex items-center justify-between">
           {!isCollapsed && (
-            <h1 className="text-xl font-bold text-gray-800 whitespace-nowrap">
-              Gestión Publicitaria
-            </h1>
+            <div className="flex items-center space-x-2">
+              <div className="p-1.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg shadow-blue-500/20">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-lg font-bold text-white whitespace-nowrap">
+                Gestión Publicitaria
+              </h1>
+            </div>
+          )}
+          {isCollapsed && (
+            <div className="p-1.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg shadow-blue-500/20 mx-auto">
+              <Sparkles className="h-5 w-5 text-white" />
+            </div>
           )}
           <div className="flex items-center space-x-2">
             {/* Botón cerrar móvil */}
             <button
               onClick={() => setIsMobileOpen(false)}
-              className="lg:hidden p-1 hover:bg-gray-100 rounded"
+              className="lg:hidden p-1.5 hover:bg-gray-700/50 rounded-lg transition-colors text-gray-300 hover:text-white"
             >
               <X className="h-4 w-4" />
             </button>
             
-            {/* Botón colapsar/expandir */}
+            {/* Botón colapsar/expandir - SIEMPRE VISIBLE */}
             <button
               onClick={toggleSidebar}
-              className="hidden lg:flex p-1 hover:bg-gray-100 rounded transition-colors"
+              className="hidden lg:flex p-1.5 hover:bg-gray-700/50 rounded-lg transition-colors text-gray-300 hover:text-white"
               title={isCollapsed ? 'Expandir sidebar' : 'Contraer sidebar'}
             >
               {isCollapsed ? (
@@ -146,48 +165,59 @@ const Sidebar = () => {
             <Link
               to="/"
               className={`
-                flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-colors
+                group flex items-center px-3 py-3 text-sm font-semibold rounded-xl transition-all duration-200
                 ${isActive('/') 
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' 
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50 scale-105' 
+                  : 'text-gray-300 hover:bg-gray-700/50 hover:text-white hover:scale-105'
                 }
                 ${isCollapsed ? 'justify-center px-2' : ''}
               `}
               title={isCollapsed ? 'Dashboard' : ''}
             >
-              <Home className={`${isCollapsed ? 'h-5 w-5' : 'h-5 w-5 mr-3'}`} />
+              <div className={`${isActive('/') ? 'bg-white/20' : 'bg-gray-700/50 group-hover:bg-gray-600/50'} p-1.5 rounded-lg ${isCollapsed ? '' : 'mr-3'}`}>
+                <LayoutDashboard className={`h-4 w-4 ${isActive('/') ? 'text-white' : 'text-blue-400 group-hover:text-blue-300'}`} />
+              </div>
               {!isCollapsed && 'Dashboard'}
             </Link>
 
             {/* Catálogos */}
-            <div>
+            <div className="mt-6">
+              {!isCollapsed && (
+                <p className="px-3 mb-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Catálogos
+                </p>
+              )}
               {isCollapsed ? (
                 <button
                   onClick={() => setCatalogosOpen(!catalogosOpen)}
                   className={`
-                    w-full flex items-center justify-center px-3 py-3 text-sm font-medium rounded-lg transition-colors
+                    group w-full flex items-center justify-center px-3 py-3 text-sm font-semibold rounded-xl transition-all duration-200
                     ${isCatalogosActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/50' 
+                      : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                     }
                   `}
                   title="Catálogos"
                 >
-                  <Folder className="h-5 w-5" />
+                  <div className={`${isCatalogosActive ? 'bg-white/20' : 'bg-gray-700/50 group-hover:bg-gray-600/50'} p-1.5 rounded-lg`}>
+                    <Folder className={`h-4 w-4 ${isCatalogosActive ? 'text-white' : 'text-indigo-400 group-hover:text-indigo-300'}`} />
+                  </div>
                 </button>
               ) : (
                 <button
                   onClick={() => setCatalogosOpen(!catalogosOpen)}
                   className={`
-                    w-full flex items-center justify-between px-3 py-3 text-sm font-medium rounded-lg transition-colors
+                    group w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200
                     ${isCatalogosActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/50' 
+                      : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                     }
                   `}
                 >
                   <div className="flex items-center">
-                    <Folder className="mr-3 h-5 w-5" />
+                    <div className={`${isCatalogosActive ? 'bg-white/20' : 'bg-gray-700/50 group-hover:bg-gray-600/50'} p-1.5 rounded-lg mr-3`}>
+                      <Folder className={`h-4 w-4 ${isCatalogosActive ? 'text-white' : 'text-indigo-400 group-hover:text-indigo-300'}`} />
+                    </div>
                     Catálogos
                   </div>
                   {catalogosOpen ? (
@@ -204,109 +234,44 @@ const Sidebar = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.1 }}
-                    className={`${isCollapsed ? 'ml-0' : 'ml-4'} mt-1 space-y-1`}
+                    transition={{ duration: 0.2 }}
+                    className={`${isCollapsed ? 'ml-0' : 'ml-2'} mt-2 space-y-1.5`}
                   >
-                    {catalogoItems.map((item) => {
+                    {catalogoItems.map((item, index) => {
                       const Icon = item.icon;
                       return (
-                        <Link
+                        <motion.div
                           key={item.path}
-                          to={item.path}
-                          className={`
-                            flex items-center px-3 py-2 text-sm rounded-lg transition-colors
-                            ${isActive(item.path)
-                              ? 'bg-blue-100 text-blue-700 font-medium'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                            }
-                            ${isCollapsed ? 'justify-center px-2' : ''}
-                          `}
-                          title={isCollapsed ? item.name : ''}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
                         >
-                          <Icon className={`${isCollapsed ? 'h-4 w-4' : 'h-4 w-4 mr-3'}`} />
-                          {!isCollapsed && item.name}
-                        </Link>
+                          <Link
+                            to={item.path}
+                            className={`
+                              group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200
+                              ${isActive(item.path)
+                                ? `bg-gradient-to-r ${item.gradient} text-white shadow-lg shadow-${item.gradient.split('-')[1]}-500/50 scale-105`
+                                : 'text-gray-400 hover:bg-gray-700/30 hover:text-white hover:scale-105'
+                              }
+                              ${isCollapsed ? 'justify-center px-2' : ''}
+                            `}
+                            title={isCollapsed ? item.name : ''}
+                          >
+                            <div className={`${isActive(item.path) ? 'bg-white/20' : 'bg-gray-700/30 group-hover:bg-gray-600/30'} p-1.5 rounded-lg ${isCollapsed ? '' : 'mr-3'}`}>
+                              <Icon className={`h-3.5 w-3.5 ${isActive(item.path) ? 'text-white' : 'text-gray-400 group-hover:text-gray-200'}`} />
+                            </div>
+                            {!isCollapsed && (
+                              <span className="flex-1">{item.name}</span>
+                            )}
+                          </Link>
+                        </motion.div>
                       );
                     })}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-
-            {/* Relaciones */} 
-            {/*
-            <div>
-              {isCollapsed ? (
-                <button
-                  onClick={() => setRelacionesOpen(!relacionesOpen)}
-                  className={`
-                    w-full flex items-center justify-center px-3 py-3 text-sm font-medium rounded-lg transition-colors
-                    ${isRelacionesActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }
-                  `}
-                  title="Relaciones"
-                >
-                  <Folder className="h-5 w-5" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => setRelacionesOpen(!relacionesOpen)}
-                  className={`
-                    w-full flex items-center justify-between px-3 py-3 text-sm font-medium rounded-lg transition-colors
-                    ${isRelacionesActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }
-                  `}
-                >
-                  <div className="flex items-center">
-                    <Folder className="mr-3 h-5 w-5" />
-                    Relaciones
-                  </div>
-                  {relacionesOpen ? (
-                    <ChevronDown className="h-4 w-4" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4" />
-                  )}
-                </button>
-              )}
-
-              <AnimatePresence>
-                {relacionesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 5 }}
-                    className={`${isCollapsed ? 'ml-0' : 'ml-4'} mt-1 space-y-1`}
-                  >
-                    {relacionesItems.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <Link
-                          key={item.path}
-                          to={item.path}
-                          className={`
-                            flex items-center px-3 py-2 text-sm rounded-lg transition-colors
-                            ${isActive(item.path)
-                              ? 'bg-blue-100 text-blue-700 font-medium'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                            }
-                            ${isCollapsed ? 'justify-center px-2' : ''}
-                          `}
-                          title={isCollapsed ? item.name : ''}
-                        >
-                          <Icon className={`${isCollapsed ? 'h-4 w-4' : 'h-4 w-4 mr-3'}`} />
-                          {!isCollapsed && item.name}
-                        </Link>
-                      );
-                    })}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>*/}
           </div>
         </nav>
       </div>

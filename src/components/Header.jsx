@@ -19,38 +19,38 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+    <header className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-2xl border-b border-gray-700/50 px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
             <input
               type="text"
               placeholder="Buscar..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-96"
+              className="pl-10 pr-4 py-2 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-gray-700 transition-all w-96"
             />
           </div>
         </div>
         
         <div className="flex items-center space-x-6">
-          <button className="relative p-2 text-gray-400 hover:text-gray-500">
+          <button className="relative p-2 text-gray-400 hover:text-blue-400 transition-colors rounded-lg hover:bg-gray-700/50">
             <Bell className="h-6 w-6" />
-            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
+            <span className="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-gray-800 animate-pulse"></span>
           </button>
           
-          <div className="flex items-center space-x-3">
-            <div className="bg-gray-200 p-2 rounded-full">
-              <User className="h-6 w-6 text-gray-600" />
+          <div className="flex items-center space-x-3 bg-gray-700/30 px-4 py-2 rounded-xl border border-gray-700/50 hover:bg-gray-700/50 transition-colors">
+            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-full shadow-lg">
+              <User className="h-5 w-5 text-white" />
             </div>
             <div className="hidden md:block">
-              <div className="text-sm font-medium text-gray-900">{user?.email || 'Usuario'}</div>
-              <div className="text-xs text-gray-500">Administrador</div>
+              <div className="text-sm font-medium text-white">{user?.email || 'Usuario'}</div>
+              <div className="text-xs text-gray-400">Administrador</div>
             </div>
           </div>
 
           <button 
             onClick={handleLogout}
-            className="flex items-center text-sm font-medium text-gray-600 hover:text-red-600 transition-colors"
+            className="flex items-center px-4 py-2 text-sm font-medium text-gray-300 hover:text-white bg-red-600/20 hover:bg-red-600/30 border border-red-500/50 rounded-xl transition-all duration-200 hover:scale-105"
             title="Cerrar Sesión"
           >
             <LogOut className="h-5 w-5" />

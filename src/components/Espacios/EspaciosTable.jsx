@@ -145,32 +145,32 @@ export default function EspaciosTable({
   const filterableColumns = columns.filter(col => col.enableColumnFilter !== false);
 
   return (
-    <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 bg-white">
+    <div className="rounded-xl shadow-2xl overflow-hidden border border-gray-700/50 bg-gradient-to-b from-gray-900 to-gray-800">
       {/* Header con Filtros */}
       {enableFilters && (
-        <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
+        <div className="p-4 bg-gradient-to-r from-gray-800 to-gray-900 border-b border-gray-700/50">
           {/* Búsqueda Global */}
           <div className="flex flex-col sm:flex-row gap-4 mb-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
               <input
                 type="text"
                 placeholder="Buscar en todos los campos..."
                 value={globalFilter}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-600 bg-gray-700/50 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
               />
             </div>
 
             <div className="flex gap-2">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 border border-gray-600 text-gray-200 rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <SlidersHorizontal className="h-4 w-4" />
                 <span>Filtros</span>
                 {(globalFilter || columnFilters.length > 0) && (
-                  <span className="bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
                     {columnFilters.length + (globalFilter ? 1 : 0)}
                   </span>
                 )}
@@ -179,7 +179,7 @@ export default function EspaciosTable({
               {(globalFilter || columnFilters.length > 0) && (
                 <button
                   onClick={clearAllFilters}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600/20 border border-red-500/50 text-red-300 rounded-lg hover:bg-red-600/30 transition-colors"
                 >
                   <X className="h-4 w-4" />
                   <span>Limpiar</span>
@@ -190,10 +190,10 @@ export default function EspaciosTable({
 
           {/* Filtros por Columna */}
           {showFilters && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700/50">
               {filterableColumns.map((column) => (
                 <div key={column.accessorKey || column.id}>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     {column.header}
                   </label>
                   <input
@@ -213,7 +213,7 @@ export default function EspaciosTable({
                         setColumnFilters(prev => prev.filter(f => f.id !== column.accessorKey));
                       }
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-600 bg-gray-700/50 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   />
                 </div>
               ))}
@@ -224,9 +224,9 @@ export default function EspaciosTable({
 
       {/* Información de resultados */}
       {enableFilters && (
-        <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
+        <div className="px-6 py-3 bg-gray-800/50 border-b border-gray-700/50">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-300">
               Mostrando {table.getRowModel().rows.length} de {data.length} registros
               {data.length > 10 && (
                 <span className="ml-2">
@@ -235,7 +235,7 @@ export default function EspaciosTable({
               )}
             </span>
             {(globalFilter || columnFilters.length > 0) && (
-              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+              <span className="text-xs bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full shadow-lg">
                 Filtros activos
               </span>
             )}
@@ -246,13 +246,13 @@ export default function EspaciosTable({
       {/* Tabla */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
-          <thead className="bg-gradient-to-r from-blue-500 to-purple-600">
+          <thead className="bg-gradient-to-r from-blue-600 to-purple-600">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="border-b border-blue-400 px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider cursor-pointer hover:bg-blue-600 transition-colors"
+                    className="border-b border-blue-500/50 px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider cursor-pointer hover:bg-blue-700/50 transition-colors"
                     onClick={enableSorting ? header.column.getToggleSortingHandler() : undefined}
                     style={{ width: header.column.columnDef.size }}
                   >
@@ -274,20 +274,20 @@ export default function EspaciosTable({
               </tr>
             ))}
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-700/50">
             {table.getRowModel().rows.map((row, index) => (
               <tr
                 key={row.id}
                 className={`
                   transition-all duration-200 ease-in-out
-                  ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                  hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50
+                  ${index % 2 === 0 ? 'bg-gray-800/30' : 'bg-gray-800/50'}
+                  hover:bg-gradient-to-r hover:from-blue-900/30 hover:to-purple-900/30
                 `}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="px-2 py-2 text-xs text-gray-700 font-medium break-words align-top"
+                    className="px-2 py-2 text-xs text-gray-200 font-medium break-words align-top"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -300,10 +300,10 @@ export default function EspaciosTable({
 
       {/* Paginación */}
       {table.getPageCount() > 1 && (
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div className="px-6 py-4 bg-gray-800/50 border-t border-gray-700/50">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Información de la página */}
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-300">
               Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
               {" • "}
               Registros {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}-
@@ -319,7 +319,7 @@ export default function EspaciosTable({
               <button
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
-                className="p-2 rounded-lg border border-gray-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                className="p-2 rounded-lg border border-gray-600 bg-gray-700/30 text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700/50 transition-colors"
                 title="Primera página"
               >
                 <ChevronsLeft className="h-4 w-4" />
@@ -329,7 +329,7 @@ export default function EspaciosTable({
               <button
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
-                className="p-2 rounded-lg border border-gray-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                className="p-2 rounded-lg border border-gray-600 bg-gray-700/30 text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700/50 transition-colors"
                 title="Página anterior"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -337,7 +337,7 @@ export default function EspaciosTable({
 
               {/* Selector de página */}
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Página</span>
+                <span className="text-sm text-gray-300">Página</span>
                 <input
                   type="number"
                   min="1"
@@ -347,16 +347,16 @@ export default function EspaciosTable({
                     const page = e.target.value ? Number(e.target.value) - 1 : 0;
                     table.setPageIndex(Math.max(0, Math.min(page, table.getPageCount() - 1)));
                   }}
-                  className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-sm"
+                  className="w-16 px-2 py-1 border border-gray-600 bg-gray-700/30 text-white rounded text-center text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <span className="text-sm text-gray-600">de {table.getPageCount()}</span>
+                <span className="text-sm text-gray-300">de {table.getPageCount()}</span>
               </div>
 
               {/* Botón Página Siguiente */}
               <button
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
-                className="p-2 rounded-lg border border-gray-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                className="p-2 rounded-lg border border-gray-600 bg-gray-700/30 text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700/50 transition-colors"
                 title="Página siguiente"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -366,7 +366,7 @@ export default function EspaciosTable({
               <button
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
-                className="p-2 rounded-lg border border-gray-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+                className="p-2 rounded-lg border border-gray-600 bg-gray-700/30 text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700/50 transition-colors"
                 title="Última página"
               >
                 <ChevronsRight className="h-4 w-4" />
@@ -375,13 +375,13 @@ export default function EspaciosTable({
 
             {/* Selector de tamaño de página */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Mostrar</span>
+              <span className="text-sm text-gray-300">Mostrar</span>
               <select
                 value={table.getState().pagination.pageSize}
                 onChange={(e) => {
                   table.setPageSize(Number(e.target.value));
                 }}
-                className="px-2 py-1 border border-gray-300 rounded text-sm"
+                className="px-2 py-1 border border-gray-600 bg-gray-700/30 text-white rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 {[10, 20, 30, 40, 50].map((pageSize) => (
                   <option key={pageSize} value={pageSize}>
@@ -389,7 +389,7 @@ export default function EspaciosTable({
                   </option>
                 ))}
               </select>
-              <span className="text-sm text-gray-600">registros</span>
+              <span className="text-sm text-gray-300">registros</span>
             </div>
           </div>
         </div>
